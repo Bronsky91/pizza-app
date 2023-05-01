@@ -1,24 +1,56 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import logo from "./logo.svg";
+import "./styles/App.css";
+import { Pizza } from "./interfaces/pizza";
+import { Page, YELLOW } from "./constants";
+import PageButton from "./components/PageButton";
+import Card from "./components/Card";
 
 function App() {
+  const [pizzas, setPizzas] = useState<Pizza[]>([]);
+  // TODO: Toppings state
+  const [selectedPage, setSelectedPage] = useState<Page>(Page.Pizzas);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/pizzas")
+      .then((r) => r.json())
+      .then((pizzas) => {
+        console.log("setting pizzas", pizzas);
+        setPizzas(pizzas);
+      });
+  }, []);
+
+  const handlePageToggle = (page: Page) => {
+    setSelectedPage(page);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className="header">
+        <div style={{ fontWeight: "bold", fontSize: 32, color: "white" }}>
+          <span style={{ color: "white" }}>STRONG</span>
+          <span style={{ color: YELLOW }}>MIND</span> PIZZA
+        </div>
+      </div>
+      <div className="body">
+        <div className="toggleButtonsContainer">
+          <PageButton
+            page={Page.Pizzas}
+            selectedPage={selectedPage}
+            handlePageToggle={handlePageToggle}
+          />
+          <PageButton
+            page={Page.Toppings}
+            selectedPage={selectedPage}
+            handlePageToggle={handlePageToggle}
+          />
+        </div>
+        <div className="pageContainer">
+          {pizzas.map((pizza) => (
+            <Card pizza={pizza} key={pizza.id} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
