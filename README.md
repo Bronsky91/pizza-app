@@ -5,7 +5,7 @@
 You will need to run both Backend and Front projects at the same time so open two terminals.
 
 - Backend
-  &nbsp;&nbsp;&nbsp;&nbsp; 1. Make sure you have Ruby and Rails installed on your computer. You can check by running `ruby -v` and `rails -v` in your terminal. If you don't have Ruby and Rails installed, you can follow the installation instructions [HERE](https://gorails.com/setup) for your operating system.
+  &nbsp;&nbsp;&nbsp;&nbsp; 1. Make sure you have Ruby version 2.7.4 and Rails 7.0.4 installed on your computer. You can check by running `ruby -v` and `rails -v` in your terminal. If you don't have Ruby and Rails installed, you can follow the installation instructions [HERE](https://gorails.com/setup) for your operating system.
   &nbsp;&nbsp;&nbsp;&nbsp; 2. `cd backend` to change into the back end project directory
   &nbsp;&nbsp;&nbsp;&nbsp; 2. `bundle install` to install all the required gems
   &nbsp;&nbsp;&nbsp;&nbsp; 2. `yarn install` to install the required packages in the package.json
