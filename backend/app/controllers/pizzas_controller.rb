@@ -51,7 +51,7 @@ class PizzasController < ApplicationController
       render json: @pizza.as_json(include: :toppings), status: :ok
     end
 
-    # DELETE /pizzas/:id/delete_toppings
+    # DELETE /pizzas/:id/remove_toppings
     def remove_toppings
       @pizza.toppings.clear
 
