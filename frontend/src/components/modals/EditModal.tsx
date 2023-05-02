@@ -3,13 +3,20 @@ import "../../styles/components/modals/EditDeleteModals.css";
 import { Page } from "../../constants";
 
 interface EditModalProps {
+  id: number;
   type: string;
   name: string;
   handleClose: () => void;
-  handleEdit: () => void;
+  handleEdit: (id: number, newName: string) => Promise<void>;
 }
 
-const EditModal = ({ type, name, handleClose, handleEdit }: EditModalProps) => {
+const EditModal = ({
+  id,
+  type,
+  name,
+  handleClose,
+  handleEdit,
+}: EditModalProps) => {
   const [newName, setNewName] = useState(name);
 
   return (
@@ -25,7 +32,11 @@ const EditModal = ({ type, name, handleClose, handleEdit }: EditModalProps) => {
         />
       </div>
       <div className="modalFooter">
-        <button onClick={handleEdit}>Save</button>
+        <button
+          onClick={() => handleEdit(id, newName).then(() => handleClose())}
+        >
+          Save
+        </button>
         <button onClick={handleClose}>Cancel</button>
       </div>
     </div>

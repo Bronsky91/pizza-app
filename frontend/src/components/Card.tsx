@@ -10,6 +10,9 @@ interface CardProps {
   item: Pizza | Topping;
   type: Page;
   allToppings?: Topping[];
+  handleEdit: (id: number, newName: string) => Promise<void>;
+  handleDelete: (id: number) => Promise<void>;
+  handleUpdateTopping?: (id: number, toppings: Topping[]) => Promise<void>;
 }
 
 enum Options {
@@ -19,7 +22,14 @@ enum Options {
   Delete = "delete",
 }
 
-const Card = ({ item, type, allToppings }: CardProps) => {
+const Card = ({
+  item,
+  type,
+  allToppings,
+  handleEdit,
+  handleDelete,
+  handleUpdateTopping,
+}: CardProps) => {
   const [selectedOption, setSelectedOption] = useState<Options>(Options.None);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
@@ -56,19 +66,6 @@ const Card = ({ item, type, allToppings }: CardProps) => {
     setSelectedOption(Options.None);
   };
 
-  const handleDelete = () => {
-    // TODO: Delete API Call
-  };
-
-  const handleEdit = () => {
-    // TODO: Edit API Call
-  };
-
-  const handleUpdateTopping = (toppings: Topping[]) => {
-    // TODO: Update Topping API Call
-    // Note: If all toppings are removed use DELETE API call
-  };
-
   return (
     <div className="cardContainer">
       <div>
@@ -100,17 +97,21 @@ const Card = ({ item, type, allToppings }: CardProps) => {
             Delete {type === Page.Pizzas ? "Pizza" : "Topping"}
           </option>
         </select>
-        {showToppingModal && allToppings && "toppings" in item && (
-          <ManageToppingModal
-            pizza={item}
-            allToppings={allToppings}
-            handleClose={handleCloseToppingModal}
-            handleSave={handleUpdateTopping}
-          />
-        )}
+        {showToppingModal &&
+          allToppings &&
+          "toppings" in item &&
+          handleUpdateTopping && (
+            <ManageToppingModal
+              pizza={item}
+              allToppings={allToppings}
+              handleClose={handleCloseToppingModal}
+              handleSave={handleUpdateTopping}
+            />
+          )}
         {showEditModal && (
           <EditModal
             type={type}
+            id={item.id}
             name={item.name}
             handleClose={handleCloseEditModal}
             handleEdit={handleEdit}
@@ -119,6 +120,7 @@ const Card = ({ item, type, allToppings }: CardProps) => {
         {showDeleteModal && (
           <DeleteModal
             type={type}
+            id={item.id}
             name={item.name}
             showModal={showDeleteModal}
             handleClose={handleCloseDeleteModal}

@@ -4,14 +4,16 @@ import { Page } from "../../constants";
 
 interface DeleteModalProps {
   type: Page;
+  id: number;
   name: string;
   showModal: boolean;
   handleClose: () => void;
-  handleDelete: () => void;
+  handleDelete: (id: number) => Promise<void>;
 }
 
 const DeleteModal = ({
   type,
+  id,
   name,
   handleClose,
   handleDelete,
@@ -25,7 +27,9 @@ const DeleteModal = ({
         {type === Page.Pizzas ? "Pizza" : "Topping"}?
       </div>
       <div className="modalFooter">
-        <button onClick={handleDelete}>Yes</button>
+        <button onClick={() => handleDelete(id).then(() => handleClose())}>
+          Yes
+        </button>
         <button onClick={handleClose}>No</button>
       </div>
     </div>

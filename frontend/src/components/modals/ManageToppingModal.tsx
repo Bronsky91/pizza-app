@@ -6,7 +6,7 @@ interface ManageToppingModalProps {
   pizza: Pizza;
   allToppings: Topping[];
   handleClose: () => void;
-  handleSave: (toppings: Topping[]) => void;
+  handleSave: (id: number, toppings: Topping[]) => Promise<void>;
 }
 
 const ManageToppingModal = ({
@@ -54,7 +54,9 @@ const ManageToppingModal = ({
       </div>
       <div className="toppingFooter">
         <button
-          onClick={() => handleSave(selectedToppings)}
+          onClick={() =>
+            handleSave(pizza.id, selectedToppings).then(() => handleClose())
+          }
           style={{ padding: "5px" }}
         >
           Save Toppings
