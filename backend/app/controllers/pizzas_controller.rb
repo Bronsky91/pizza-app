@@ -17,7 +17,7 @@ class PizzasController < ApplicationController
       @pizza = Pizza.new(pizza_params)
   
       if @pizza.save
-        render json: @pizza, status: :created, location: @pizza
+        render json: @pizza.as_json(include: :toppings), status: :created, location: @pizza
       else
         render json: @pizza.errors, status: :unprocessable_entity
       end
@@ -26,7 +26,7 @@ class PizzasController < ApplicationController
     # PUT /pizzas/:id
     def update
       if @pizza.update(pizza_params)
-        render json: @pizza
+        render json: @pizza.as_json(include: :toppings)
       else
         render json: @pizza.errors, status: :unprocessable_entity
       end
