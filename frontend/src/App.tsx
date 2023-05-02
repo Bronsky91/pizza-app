@@ -17,14 +17,12 @@ function App() {
     fetch(`${API_URL}/pizzas`)
       .then((r) => r.json())
       .then((pizzas) => {
-        console.log("setting pizzas", pizzas);
         setPizzas(pizzas);
       });
 
     fetch(`${API_URL}/toppings`)
       .then((r) => r.json())
       .then((toppings) => {
-        console.log("setting toppings", toppings);
         setToppings(toppings);
       });
   }, []);
@@ -118,7 +116,6 @@ function App() {
     })
       .then((r) => (r.ok ? removeItem(id) : Promise.reject(r)))
       .catch((r) => {
-        console.log(r.status);
         alert(
           `There was an error deleting ${
             selectedPage === Page.Pizzas ? "Pizza" : "Topping"
