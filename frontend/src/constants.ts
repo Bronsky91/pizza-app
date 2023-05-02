@@ -4,4 +4,4 @@ export enum Page {
   }
 
 export const YELLOW = "#fcb900"
-export const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3000"
+export const API_URL = process.env.NODE_ENV === 'production' ? "https://strongmind-pizza-server.fly.dev" : "http://localhost:3000"
