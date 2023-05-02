@@ -5,11 +5,14 @@ import { Pizza, Topping } from "./interfaces/pizza";
 import { Page, YELLOW } from "./constants";
 import PageButton from "./components/PageButton";
 import Card from "./components/Card";
+import AddCard from "./components/AddCard";
+import AddModal from "./components/modals/AddModal";
 
 function App() {
   const [pizzas, setPizzas] = useState<Pizza[]>([]);
   const [toppings, setToppings] = useState<Topping[]>([]);
   const [selectedPage, setSelectedPage] = useState<Page>(Page.Pizzas);
+  const [showAddModal, setShowAddModal] = useState<boolean>(false);
 
   useEffect(() => {
     fetch("http://localhost:3000/pizzas")
@@ -29,6 +32,15 @@ function App() {
 
   const handlePageToggle = (page: Page) => {
     setSelectedPage(page);
+  };
+
+  const handleAddCard = () => {
+    setShowAddModal(true);
+  };
+
+  const handleSaveCard = (name: string) => {
+    // TODO: Using selectedPage add the appropriate card
+    // TODO: API Call to create pizza or topping
   };
 
   return (
@@ -53,11 +65,30 @@ function App() {
           />
         </div>
         <div className="pageContainer">
-          {pizzas.map((pizza) => (
-            <Card key={pizza.id} pizza={pizza} allToppings={toppings} />
-          ))}
+          {selectedPage === Page.Pizzas
+            ? pizzas.map((pizza) => (
+                <Card
+                  key={pizza.id}
+                  type={Page.Pizzas}
+                  item={pizza}
+                  allToppings={toppings}
+                />
+              ))
+            : toppings.map((topping) => (
+                <Card key={topping.id} type={Page.Toppings} item={topping} />
+              ))}
+          <AddCard type={selectedPage} handleAddCard={handleAddCard} />
         </div>
       </div>
+      {showAddModal && (
+        <AddModal
+          type={selectedPage}
+          handleClose={() => {
+            setShowAddModal(false);
+          }}
+          handleSaveCard={handleSaveCard}
+        />
+      )}
     </div>
   );
 }

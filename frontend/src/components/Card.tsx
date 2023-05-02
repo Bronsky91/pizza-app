@@ -7,8 +7,9 @@ import EditModal from "./modals/EditModal";
 import ManageToppingModal from "./modals/ManageToppingModal";
 
 interface CardProps {
-  pizza: Pizza;
-  allToppings: Topping[];
+  item: Pizza | Topping;
+  type: Page;
+  allToppings?: Topping[];
 }
 
 enum Options {
@@ -18,7 +19,7 @@ enum Options {
   Delete = "delete",
 }
 
-const Card = ({ pizza, allToppings }: CardProps) => {
+const Card = ({ item, type, allToppings }: CardProps) => {
   const [selectedOption, setSelectedOption] = useState<Options>(Options.None);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
@@ -71,12 +72,14 @@ const Card = ({ pizza, allToppings }: CardProps) => {
   return (
     <div className="cardContainer">
       <div>
-        <div className="title">{pizza.name}</div>
-        <ul className="toppingList">
-          {pizza.toppings.map((topping: any) => (
-            <li key={topping.id}>{topping.name}</li>
-          ))}
-        </ul>
+        <div className="title">{item.name}</div>
+        {"toppings" in item ? (
+          <ul className="toppingList">
+            {item.toppings.map((topping: any) => (
+              <li key={topping.id}>{topping.name}</li>
+            ))}
+          </ul>
+        ) : null}
       </div>
       <div>
         <select
@@ -87,13 +90,19 @@ const Card = ({ pizza, allToppings }: CardProps) => {
           <option value={Options.None} disabled>
             Manage
           </option>
-          <option value={Options.UpdateTopppings}>Update Toppings</option>
-          <option value={Options.Edit}>Edit Pizza</option>
-          <option value={Options.Delete}>Delete Pizza</option>
+          {"toppings" in item && (
+            <option value={Options.UpdateTopppings}>Update Toppings</option>
+          )}
+          <option value={Options.Edit}>
+            Edit {type === Page.Pizzas ? "Pizza" : "Topping"}
+          </option>
+          <option value={Options.Delete}>
+            Delete {type === Page.Pizzas ? "Pizza" : "Topping"}
+          </option>
         </select>
-        {showToppingModal && (
+        {showToppingModal && allToppings && "toppings" in item && (
           <ManageToppingModal
-            pizza={pizza}
+            pizza={item}
             allToppings={allToppings}
             handleClose={handleCloseToppingModal}
             handleSave={handleUpdateTopping}
@@ -101,16 +110,16 @@ const Card = ({ pizza, allToppings }: CardProps) => {
         )}
         {showEditModal && (
           <EditModal
-            type={Page.Pizzas}
-            name={pizza.name}
+            type={type}
+            name={item.name}
             handleClose={handleCloseEditModal}
             handleEdit={handleEdit}
           />
         )}
         {showDeleteModal && (
           <DeleteModal
-            type={Page.Pizzas}
-            name={pizza.name}
+            type={type}
+            name={item.name}
             showModal={showDeleteModal}
             handleClose={handleCloseDeleteModal}
             handleDelete={handleDelete}

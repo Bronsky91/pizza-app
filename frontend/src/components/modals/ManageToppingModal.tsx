@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import "../../styles/components/modals/ToppingModal.css";
-import { Topping } from "../../interfaces/pizza";
+import { Pizza, Topping } from "../../interfaces/pizza";
+
+interface ManageToppingModalProps {
+  pizza: Pizza;
+  allToppings: Topping[];
+  handleClose: () => void;
+  handleSave: (toppings: Topping[]) => void;
+}
 
 const ManageToppingModal = ({
   pizza,
   allToppings,
   handleClose,
   handleSave,
-}: any) => {
+}: ManageToppingModalProps) => {
   const [selectedToppings, setSelectedToppings] = useState<Topping[]>(
     pizza.toppings
   );
@@ -18,7 +25,7 @@ const ManageToppingModal = ({
     const checkedTopping = allToppings.find((t: Topping) => t.id === toppingId);
 
     setSelectedToppings((prevSelectedToppings) => {
-      if (isChecked) {
+      if (isChecked && checkedTopping) {
         return [...prevSelectedToppings, checkedTopping];
       } else {
         return prevSelectedToppings.filter((t) => t.id !== toppingId);
@@ -46,7 +53,10 @@ const ManageToppingModal = ({
         ))}
       </div>
       <div className="toppingFooter">
-        <button onClick={handleSave} style={{ padding: "5px" }}>
+        <button
+          onClick={() => handleSave(selectedToppings)}
+          style={{ padding: "5px" }}
+        >
           Save Toppings
         </button>
         <button onClick={handleClose} style={{ width: "50%" }}>
