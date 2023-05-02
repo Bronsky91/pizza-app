@@ -1,0 +1,50 @@
+.toppingContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 20em;
+  width: 22em;
+  background-color: white;
+  border-radius: 10%;
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.toppingListContainer {
+  /* margin-top: 0px; */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: 10em;
+}
+
+.toppingHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.toppingTitle {
+  font-weight: bold;
+  text-decoration: underline;
+  font-size: 22px;
+}
+
+.toppingSubTitle {
+  font-size: 18px;
+}
+
+.toppingFooter {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 4em;
+}

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "../styles/components/Card.css";
-import { Pizza } from "../interfaces/pizza";
+import { Pizza, Topping } from "../interfaces/pizza";
 import DeleteModal from "./modals/DeleteModal";
 import { Page } from "../constants";
 import EditModal from "./modals/EditModal";
+import ManageToppingModal from "./modals/ManageToppingModal";
 
 interface CardProps {
   pizza: Pizza;
+  allToppings: Topping[];
 }
 
 enum Options {
@@ -16,10 +18,11 @@ enum Options {
   Delete = "delete",
 }
 
-const Card = ({ pizza }: CardProps) => {
+const Card = ({ pizza, allToppings }: CardProps) => {
   const [selectedOption, setSelectedOption] = useState<Options>(Options.None);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const [showToppingModal, setShowToppingModal] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedOption === Options.Delete) {
@@ -27,6 +30,9 @@ const Card = ({ pizza }: CardProps) => {
     }
     if (selectedOption === Options.Edit) {
       setShowEditModal(true);
+    }
+    if (selectedOption === Options.UpdateTopppings) {
+      setShowToppingModal(true);
     }
   }, [selectedOption]);
 
@@ -44,12 +50,22 @@ const Card = ({ pizza }: CardProps) => {
     setSelectedOption(Options.None);
   };
 
+  const handleCloseToppingModal = () => {
+    setShowToppingModal(false);
+    setSelectedOption(Options.None);
+  };
+
   const handleDelete = () => {
     // TODO: Delete API Call
   };
 
   const handleEdit = () => {
     // TODO: Edit API Call
+  };
+
+  const handleUpdateTopping = (toppings: Topping[]) => {
+    // TODO: Update Topping API Call
+    // Note: If all toppings are removed use DELETE API call
   };
 
   return (
@@ -75,6 +91,14 @@ const Card = ({ pizza }: CardProps) => {
           <option value={Options.Edit}>Edit Pizza</option>
           <option value={Options.Delete}>Delete Pizza</option>
         </select>
+        {showToppingModal && (
+          <ManageToppingModal
+            pizza={pizza}
+            allToppings={allToppings}
+            handleClose={handleCloseToppingModal}
+            handleSave={handleUpdateTopping}
+          />
+        )}
         {showEditModal && (
           <EditModal
             type={Page.Pizzas}
