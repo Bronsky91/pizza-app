@@ -127,7 +127,7 @@ function App() {
   const handleUpdateTopping = async (id: number, toppings: Topping[]) => {
     // Depending on if the toppings array is empty the API call will change
     const path = `${API_URL}/pizzas/${id}/${
-      toppings.length > 0 ? "update_toppings" : "delete_toppings"
+      toppings.length > 0 ? "update_toppings" : "remove_toppings"
     }`;
 
     return fetch(path, {
